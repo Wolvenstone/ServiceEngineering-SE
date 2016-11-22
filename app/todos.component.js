@@ -10,35 +10,35 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
-var common_1 = require('@angular/common');
 var todo_service_1 = require('./todo.service');
-var TodoDetailComponent = (function () {
-    function TodoDetailComponent(todoService, route, location) {
+var TodosComponent = (function () {
+    function TodosComponent(router, todoService) {
+        this.router = router;
         this.todoService = todoService;
-        this.route = route;
-        this.location = location;
     }
-    TodoDetailComponent.prototype.ngOnInit = function () {
+    TodosComponent.prototype.ngOnInit = function () {
+        this.getTodos();
+    };
+    TodosComponent.prototype.getTodos = function () {
         var _this = this;
-        this.route.params.forEach(function (params) {
-            var id = +params['id'];
-            _this.todoService.getTodo(id)
-                .then(function (todo) { return _this.todo = todo; });
-        });
+        this.todoService.getTodos().then(function (todos) { return _this.todos = todos; });
     };
-    TodoDetailComponent.prototype.goBack = function () {
-        this.location.back();
+    TodosComponent.prototype.onSelect = function (todo) {
+        this.selectedTodo = todo;
     };
-    TodoDetailComponent = __decorate([
+    TodosComponent.prototype.gotoDetail = function () {
+        this.router.navigate(['/detail', this.selectedTodo.id]);
+    };
+    TodosComponent = __decorate([
         core_1.Component({
             moduleId: module.id,
-            selector: 'my-todo-detail',
-            templateUrl: 'todo-detail.component.html',
-            styleUrls: ['todo-detail.component.css']
+            selector: 'my-todos',
+            templateUrl: 'todos.component.html',
+            styleUrls: ['todos.component.css']
         }), 
-        __metadata('design:paramtypes', [todo_service_1.TodoService, router_1.ActivatedRoute, common_1.Location])
-    ], TodoDetailComponent);
-    return TodoDetailComponent;
+        __metadata('design:paramtypes', [router_1.Router, todo_service_1.TodoService])
+    ], TodosComponent);
+    return TodosComponent;
 }());
-exports.TodoDetailComponent = TodoDetailComponent;
-//# sourceMappingURL=todo-detail.component.js.map
+exports.TodosComponent = TodosComponent;
+//# sourceMappingURL=todos.component.js.map

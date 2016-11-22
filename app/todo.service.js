@@ -9,20 +9,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var AppComponent = (function () {
-    function AppComponent() {
-        this.title = 'Todo App';
+var mock_todos_1 = require('./mock-todos');
+var TodoService = (function () {
+    function TodoService() {
     }
-    AppComponent = __decorate([
-        core_1.Component({
-            moduleId: module.id,
-            selector: 'my-app',
-            template: "\n        <h1>{{title}}</h1>\n        <nav>\n            <a routerLink=\"/dashboard\" routerLinkActive=\"active\">Dashboard</a>\n            <a routerLink=\"/todos\" routerLinkActive=\"active\">Todos</a>\n        </nav>\n        <router-outlet></router-outlet>\n    ",
-            styleUrls: ['app.component.css']
-        }), 
+    TodoService.prototype.getTodos = function () {
+        return new Promise(function (resolve) {
+            return setTimeout(resolve, 2000);
+        }) // delay 2 seconds
+            .then(function () { return Promise.resolve(mock_todos_1.TODOS); });
+    };
+    ;
+    TodoService.prototype.getTodo = function (id) {
+        return this.getTodos()
+            .then(function (todos) { return todos.find(function (todo) { return todo.id === id; }); });
+    };
+    TodoService = __decorate([
+        core_1.Injectable(), 
         __metadata('design:paramtypes', [])
-    ], AppComponent);
-    return AppComponent;
+    ], TodoService);
+    return TodoService;
 }());
-exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map
+exports.TodoService = TodoService;
+//# sourceMappingURL=todo.service.js.map
